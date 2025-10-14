@@ -25,9 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const alignCenterBtn = document.getElementById("alignCenterBtn");
   const alignRightBtn = document.getElementById("alignRightBtn");
 
-  const bringForwardBtn = document.getElementById("bringForwardBtn");
-  const sendBackwardBtn = document.getElementById("sendBackwardBtn");
-
   // === Funciones utilitarias ===
   function rgbToHex(rgb) {
     if (!rgb) return "#000000";
