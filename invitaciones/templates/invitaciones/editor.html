@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BODAPIX - Editor de Invitaciones</title>
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&family=Cormorant+Garamond:wght@400;700&family=Dancing+Script:wght@400;700&family=Cinzel:wght@400;700&family=Montserrat:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="{% static 'invitaciones/css/editor.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BODAPIX</h1>
+            <div class="header-line"></div>
+        </div>
+
+        <div class="editor-wrapper">
+            <div class="panel">
+                <div class="form-section">
+                    <div class="section-header">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+                        <h2 class="section-title">Texto</h2>
+                    </div>
+                    <input type="text" id="textContent" class="input-field" placeholder="Escribe tu texto">
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-subtitle">Fuente</h3>
+                    <select id="fontFamily" class="select-field">
+                        <option value="Playfair Display">Playfair Display</option>
+                        <option value="Great Vibes">Great Vibes</option>
+                        <option value="Cormorant Garamond">Cormorant Garamond</option>
+                        <option value="Dancing Script">Dancing Script</option>
+                        <option value="Cinzel">Cinzel</option>
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="Lora">Lora</option>
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <div class="range-container">
+                        <h3 class="section-subtitle">Tamaño</h3>
+                        <span class="range-value" id="fontSizeValue">48px</span>
+                    </div>
+                    <input type="range" id="fontSize" class="range-slider" min="12" max="72" value="48">
+                </div>
+
+                <div class="button-grid-3">
+                    <button class="btn btn-outline" id="alignLeftBtn" title="Alinear a la izquierda">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6"/>
+                            <line x1="4" y1="12" x2="14" y2="12"/>
+                            <line x1="4" y1="18" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+
+                    <button class="btn btn-outline" id="alignCenterBtn" title="Alinear al centro">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="6" y1="6" x2="18" y2="6"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                            <line x1="5" y1="18" x2="19" y2="18"/>
+                        </svg>
+                    </button>
+
+                    <button class="btn btn-outline" id="alignRightBtn" title="Alinear a la derecha">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6"/>
+                            <line x1="10" y1="12" x2="20" y2="12"/>
+                            <line x1="6" y1="18" x2="20" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+                <div class="form-section">
+                    <div class="section-header">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        <h3 class="section-subtitle">Color</h3>
+                    </div>
+                    <div class="color-group">
+                        <input type="color" id="textColor" class="color-picker" value="#000000">
+                        <input type="text" id="textColorHex" class="color-input" value="#000000">
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="form-section">
+                    <div class="button-grid-3">
+                        <button class="btn btn-black" id="addTextBtn" title="Añadir Texto">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <button class="btn btn-outline" id="deleteBtn" title="Eliminar">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
+                        <label class="btn btn-outline" style="margin: 0;" title="Subir Imagen">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                            <input type="file" id="uploadImage" accept="image/*" style="display: none;">
+                        </label>
+                    </div>
+
+                    <div class="divider" style="margin: 16px 0;"></div>
+
+                    <div class="button-grid-2">
+                        <button class="btn btn-black" id="downloadBtn">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                            <span>Descargar</span>
+                        </button>
+                        <button class="btn btn-gray" id="saveBtn">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+                            <span>Guardar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-section">
+                <div class="canvas-controls">
+                    <button class="btn-icon" id="zoomOutBtn" title="Alejar">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M8 11h6"/></svg>
+                    </button>
+                    <button class="btn-icon" id="zoomInBtn" title="Acercar">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+                    </button>
+                    <button class="btn-icon" id="undoBtn" title="Deshacer">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
+                    </button>
+                </div>
+
+                <div class="canvas-container">
+                    <div id="canvas"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Librería necesaria para descargar como imagen -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="{% static 'invitaciones/js/editor.js' %}"></script>
+
+</body>
+</html>
