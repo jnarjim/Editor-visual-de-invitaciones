@@ -289,35 +289,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function setupStepper(idSpan, min, max, callback) {
-    const container = document.getElementById(idSpan).parentElement;
-    const span = document.getElementById(idSpan);
+  function setupStepper(idInput, min, max, step, callback) {
+  const container = document.getElementById(idInput).parentElement;
+  const input = document.getElementById(idInput);
 
-    container.querySelectorAll(".stepper-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        let step = parseFloat(btn.dataset.step);
-        let current = parseFloat(span.textContent);
-        let newValue = Math.min(max, Math.max(min, current + step));
-        span.textContent = newValue.toFixed(1);
-        callback(newValue);
-      });
+  // Asegurar que el input tiene los atributos adecuados
+  input.min = min;
+  input.max = max;
+  input.step = step;
+
+  // Botones + y −
+  container.querySelectorAll(".stepper-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      let stepValue = parseFloat(btn.dataset.step);
+      let currentValue = parseFloat(input.value);
+      let newValue = currentValue + stepValue;
+
+      if (newValue < min) newValue = min;
+      if (newValue > max) newValue = max;
+
+      input.value = parseFloat(newValue.toFixed(2));
+      callback(parseFloat(input.value));
     });
-  }
+  });
+
+  // Edición manual directa
+  input.addEventListener("input", () => {
+    let value = parseFloat(input.value);
+    if (isNaN(value)) return;
+    if (value < min) value = min;
+    if (value > max) value = max;
+    input.value = parseFloat(value.toFixed(2));
+    callback(value);
+  });
+}
 
   // Interlineado
-  setupStepper("lineHeightValueStepper", 0.5, 3, (value) => {
-    if (selectedElement && selectedElement.classList.contains("text-element")) {
-      selectedElement.style.lineHeight = value;
-    }
-  });
+  setupStepper("lineHeightValueStepper", 0.5, 3, 0.1, (value) => {
+  if (selectedElement && selectedElement.classList.contains("text-element")) {
+    selectedElement.style.lineHeight = value;
+  }
+});
 
   // Interletrado
-  setupStepper("letterSpacingValueStepper", 0, 20, (value) => {
-    if (selectedElement && selectedElement.classList.contains("text-element")) {
-      selectedElement.style.letterSpacing = value + "px";
-    }
-  });
-
+  setupStepper("letterSpacingValueStepper", 0, 20, 0.5, (value) => {
+  if (selectedElement && selectedElement.classList.contains("text-element")) {
+    selectedElement.style.letterSpacing = value + "px";
+  }
+});
 
   // === Arrastrar elementos ===
   function makeDraggable(el) {

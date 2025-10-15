@@ -448,8 +448,9 @@ body {
   gap: 6px;
 }
 
-.number-stepper span {
-  min-width: 45px;
+/* El input editable central */
+.number-stepper input[type="number"] {
+  width: 50px;
   text-align: center;
   font-weight: 600;
   font-size: 14px;
@@ -459,12 +460,21 @@ body {
   border-radius: 8px;
   border: 1px solid #d1d5db;
   transition: background-color 0.2s ease;
+  -moz-appearance: textfield; /* Oculta flechas en Firefox */
 }
 
-.number-stepper span:hover {
+.number-stepper input[type="number"]:hover {
   background-color: #e5e7eb;
 }
 
+/* Ocultar flechas del input en Chrome/Safari */
+.number-stepper input::-webkit-outer-spin-button,
+.number-stepper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Botones + y − */
 .stepper-btn {
   display: inline-flex;
   justify-content: center;
@@ -473,8 +483,8 @@ body {
   height: 28px;
   font-size: 16px;
   font-weight: bold;
-  color: #00000;
-  background-color: #fffff;
+  color: #000;
+  background-color: #fff;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   cursor: pointer;
@@ -482,7 +492,8 @@ body {
 }
 
 .stepper-btn:hover {
-  border-color: #000000;
+  border-color: #000;
+  background-color: #f9fafb;
   transform: scale(1.05);
 }
 
