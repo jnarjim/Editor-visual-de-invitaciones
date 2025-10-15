@@ -413,6 +413,54 @@ body {
   font-size: 11px;
 }
 
+.number-stepper {
+  display: inline-flex;           /* horizontal, botones y número en fila */
+  align-items: center;            /* centra verticalmente */
+  gap: 6px;                       /* espacio entre botones y número */
+}
+
+.number-stepper span {
+  min-width: 45px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 0;
+  color: #111827;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s ease;
+}
+
+.number-stepper span:hover {
+  background-color: #e5e7eb;
+}
+
+.stepper-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #111827;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.stepper-btn:hover {
+  background-color: #1f2937;
+  transform: scale(1.05);
+}
+
+.stepper-btn:active {
+  transform: scale(0.95);
+}
+
 .icon {
   width: 16px;
   height: 16px;

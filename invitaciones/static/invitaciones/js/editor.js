@@ -55,12 +55,18 @@ document.addEventListener("DOMContentLoaded", () => {
         fontSize.value = parseInt(selectedElement.style.fontSize) || 48;
         fontSizeValue.textContent = `${fontSize.value}px`;
 
+        const currentLineHeight = parseFloat(selectedElement.style.lineHeight) || 1.2;
+        document.getElementById("lineHeightValueStepper").textContent = currentLineHeight.toFixed(1);
+
         const actualColor =
           selectedElement.dataset.actualColor ||
           rgbToHex(selectedElement.style.color) ||
           "#000000";
         textColor.value = actualColor;
         textColorHex.value = actualColor;
+
+        const currentSpacing = parseFloat(selectedElement.style.letterSpacing) || 0;
+        document.getElementById("letterSpacingValueStepper").textContent = currentSpacing.toFixed(1);
 
         // No hay imagen seleccionada
         selectedImage = null;
@@ -283,6 +289,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function setupStepper(idSpan, min, max, callback) {
+    const container = document.getElementById(idSpan).parentElement;
+    const span = document.getElementById(idSpan);
+
+    container.querySelectorAll(".stepper-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        let step = parseFloat(btn.dataset.step);
+        let current = parseFloat(span.textContent);
+        let newValue = Math.min(max, Math.max(min, current + step));
+        span.textContent = newValue.toFixed(1);
+        callback(newValue);
+      });
+    });
+  }
+
+  // Interlineado
+  setupStepper("lineHeightValueStepper", 0.5, 3, (value) => {
+    if (selectedElement && selectedElement.classList.contains("text-element")) {
+      selectedElement.style.lineHeight = value;
+    }
+  });
+
+  // Interletrado
+  setupStepper("letterSpacingValueStepper", 0, 20, (value) => {
+    if (selectedElement && selectedElement.classList.contains("text-element")) {
+      selectedElement.style.letterSpacing = value + "px";
+    }
+  });
+
+
   // === Arrastrar elementos ===
   function makeDraggable(el) {
     el.addEventListener("mousedown", (e) => {
@@ -388,7 +424,6 @@ document.addEventListener("DOMContentLoaded", () => {
       startX = e.clientX;
       startY = e.clientY;
 
-      // Valores iniciales
       startWidth = parseFloat(getComputedStyle(el, null).getPropertyValue("width").replace("px", ""));
       startHeight = parseFloat(getComputedStyle(el, null).getPropertyValue("height").replace("px", ""));
       startFontSize = parseFloat(getComputedStyle(el, null).getPropertyValue("font-size").replace("px", ""));
@@ -401,17 +436,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isResizing) return;
 
       const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
 
-      // Nuevo ancho proporcional
-      const newWidth = Math.max(50, startWidth + dx);
-      el.style.width = `${newWidth}px`;
+      // Escalado proporcional según el movimiento diagonal
+      const scaleFactor = Math.max(0.3, 1 + Math.max(dx, dy) / 100);
 
-      // Ajustar font-size proporcional al cambio de ancho
-      const scaleFactor = newWidth / startWidth;
+      const newWidth = Math.max(50, startWidth * scaleFactor);
+      const newHeight = Math.max(30, startHeight * scaleFactor);
       const newFontSize = Math.max(6, startFontSize * scaleFactor);
+
+      el.style.width = `${newWidth}px`;
+      el.style.height = `${newHeight}px`;
       el.style.fontSize = `${newFontSize}px`;
 
-      // Actualizar el valor del panel si este elemento está seleccionado
+      // Actualiza los controles si está seleccionado
       if (selectedElement === el) {
         fontSize.value = Math.round(newFontSize);
         fontSizeValue.textContent = `${Math.round(newFontSize)}px`;
@@ -419,9 +457,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function stopResize() {
-        isResizing = false;
-        document.removeEventListener("mousemove", resize);
-        document.removeEventListener("mouseup", stopResize);
+      isResizing = false;
+      document.removeEventListener("mousemove", resize);
+      document.removeEventListener("mouseup", stopResize);
     }
 
     // Handle de altura
