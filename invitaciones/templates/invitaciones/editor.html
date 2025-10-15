@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{% static 'invitaciones/css/editor.css' %}">
 </head>
 <body>
+
     <div class="container">
         <div class="header">
             <h1>BODAPIX</h1>
@@ -49,51 +50,6 @@
                     </div>
                     <input type="range" id="fontSize" class="range-slider" min="12" max="72" value="48">
                 </div>
-
-                <div class="control-group">
-                  <label>Interlineado:</label>
-                  <div class="number-stepper">
-                    <button type="button" class="stepper-btn" data-step="-0.1">−</button>
-                    <span id="lineHeightValueStepper">1.2</span>
-                    <button type="button" class="stepper-btn" data-step="0.1">+</button>
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <label>Interletrado:</label>
-                  <div class="number-stepper">
-                    <button type="button" class="stepper-btn" data-step="-0.5">−</button>
-                    <span id="letterSpacingValueStepper">0</span>
-                    <button type="button" class="stepper-btn" data-step="0.5">+</button>
-                  </div>
-                </div>
-
-                <div class="button-grid-3">
-                    <button class="btn btn-outline" id="alignLeftBtn" title="Alinear a la izquierda">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <line x1="4" y1="6" x2="20" y2="6"/>
-                            <line x1="4" y1="12" x2="14" y2="12"/>
-                            <line x1="4" y1="18" x2="18" y2="18"/>
-                        </svg>
-                    </button>
-
-                    <button class="btn btn-outline" id="alignCenterBtn" title="Alinear al centro">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <line x1="6" y1="6" x2="18" y2="6"/>
-                            <line x1="8" y1="12" x2="16" y2="12"/>
-                            <line x1="5" y1="18" x2="19" y2="18"/>
-                        </svg>
-                    </button>
-
-                    <button class="btn btn-outline" id="alignRightBtn" title="Alinear a la derecha">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <line x1="4" y1="6" x2="20" y2="6"/>
-                            <line x1="10" y1="12" x2="20" y2="12"/>
-                            <line x1="6" y1="18" x2="20" y2="18"/>
-                        </svg>
-                    </button>
-                </div>
-
 
                 <div class="form-section">
                     <div class="section-header">
@@ -139,15 +95,63 @@
 
             <div class="canvas-section">
                 <div class="canvas-controls">
-                    <button class="btn-icon" id="zoomOutBtn" title="Alejar">
-                        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M8 11h6"/></svg>
-                    </button>
-                    <button class="btn-icon" id="zoomInBtn" title="Acercar">
-                        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
-                    </button>
-                    <button class="btn-icon" id="undoBtn" title="Deshacer">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
-                    </button>
+                    <div class="controls-left">
+                        <div class="control-group-inline">
+                          <label>Interlineado:</label>
+                          <div class="number-stepper">
+                            <button type="button" class="stepper-btn" data-step="-0.1">−</button>
+                            <span id="lineHeightValueStepper">1.2</span>
+                            <button type="button" class="stepper-btn" data-step="0.1">+</button>
+                          </div>
+                        </div>
+
+                        <div class="control-group-inline">
+                          <label>Interletrado:</label>
+                          <div class="number-stepper">
+                            <button type="button" class="stepper-btn" data-step="-0.5">−</button>
+                            <span id="letterSpacingValueStepper">0</span>
+                            <button type="button" class="stepper-btn" data-step="0.5">+</button>
+                          </div>
+                        </div>
+
+                        <div class="align-buttons">
+                            <button class="btn-icon" id="alignLeftBtn" title="Alinear a la izquierda">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <line x1="4" y1="6" x2="20" y2="6"/>
+                                    <line x1="4" y1="12" x2="14" y2="12"/>
+                                    <line x1="4" y1="18" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+
+                            <button class="btn-icon" id="alignCenterBtn" title="Alinear al centro">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <line x1="6" y1="6" x2="18" y2="6"/>
+                                    <line x1="8" y1="12" x2="16" y2="12"/>
+                                    <line x1="5" y1="18" x2="19" y2="18"/>
+                                </svg>
+                            </button>
+
+                            <button class="btn-icon" id="alignRightBtn" title="Alinear a la derecha">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <line x1="4" y1="6" x2="20" y2="6"/>
+                                    <line x1="10" y1="12" x2="20" y2="12"/>
+                                    <line x1="6" y1="18" x2="20" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="controls-right">
+                        <button class="btn-icon" id="zoomOutBtn" title="Alejar">
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M8 11h6"/></svg>
+                        </button>
+                        <button class="btn-icon" id="zoomInBtn" title="Acercar">
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+                        </button>
+                        <button class="btn-icon" id="undoBtn" title="Deshacer">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="canvas-container">

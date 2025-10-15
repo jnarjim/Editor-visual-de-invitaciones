@@ -177,7 +177,6 @@ body {
   gap: 8px;
 }
 
-/* Botones */
 .btn {
   display: flex;
   align-items: center;
@@ -264,8 +263,42 @@ body {
 
 .canvas-controls {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.controls-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.controls-right {
+  display: flex;
   gap: 8px;
+}
+
+.control-group-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-group-inline label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666;
+  white-space: nowrap;
+}
+
+.align-buttons {
+  display: flex;
+  gap: 4px;
 }
 
 .canvas-container {
@@ -341,9 +374,6 @@ body {
   color: inherit;
 }
 
-/* =========================================================
-   HANDLES (CIRCULITOS DE REDIMENSIÓN)
-========================================================= */
 .text-element .resize-handle,
 .text-element .resize-handle-height,
 .text-element .resize-handle-width {
@@ -394,7 +424,6 @@ body {
   background: gray;
 }
 
-/* Símbolos internos */
 .resize-handle::before {
   content: "↘";
   color: white;
@@ -414,9 +443,9 @@ body {
 }
 
 .number-stepper {
-  display: inline-flex;           /* horizontal, botones y número en fila */
-  align-items: center;            /* centra verticalmente */
-  gap: 6px;                       /* espacio entre botones y número */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .number-stepper span {
@@ -444,16 +473,16 @@ body {
   height: 28px;
   font-size: 16px;
   font-weight: bold;
-  color: #fff;
-  background-color: #111827;
-  border: none;
+  color: #00000;
+  background-color: #fffff;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .stepper-btn:hover {
-  background-color: #1f2937;
+  border-color: #000000;
   transform: scale(1.05);
 }
 
