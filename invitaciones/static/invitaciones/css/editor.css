@@ -553,6 +553,67 @@ body {
   stroke-linejoin: round;
 }
 
+.fullscreen {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  background: white;
+
+  display: grid;
+  grid-template-rows: auto 1fr; /* fila superior para controles, resto para contenido */
+  grid-template-columns: 1fr;   /* una columna principal */
+  gap: 0;
+  padding: 0;
+}
+
+/* Barra superior de controles, siempre centrada */
+.fullscreen .canvas-controls {
+  grid-row: 1 / 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  position: relative;
+  z-index: 10000;
+}
+
+/* Contenido principal: panel izquierdo + canvas */
+.fullscreen .editor-content {
+  grid-row: 2 / 3;
+  display: grid;
+  grid-template-columns: 300px 1fr; /* panel fijo + canvas expandible */
+  height: 100%;
+  gap: 24px;
+  padding: 24px;
+}
+
+/* Panel izquierdo */
+.fullscreen .panel {
+  max-width: 300px;
+  height: 100%;
+  overflow-y: auto;
+  gap: 32px;
+}
+
+/* Canvas ocupa todo lo que queda */
+.fullscreen .canvas-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+/* Canvas interno centrado y máximo tamaño */
+.fullscreen #canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .icon-sm {
   width: 14px;
   height: 14px;

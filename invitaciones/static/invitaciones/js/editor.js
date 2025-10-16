@@ -696,6 +696,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // FULLSCREEN
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+  const editorWrapper = document.querySelector(".editor-wrapper");
+  let isFullscreen = false;
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      editorWrapper.requestFullscreen().then(() => {
+        editorWrapper.classList.add("fullscreen");
+        isFullscreen = true;
+        fullscreenIcon.innerHTML = '<path d="M6 6h4V4H4v6h2V6zm12 0v4h2V4h-6v2h4zm0 12h-4v2h6v-6h-2v4zm-12 0v-4H4v6h6v-2H6z"/>';
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        editorWrapper.classList.remove("fullscreen");
+        isFullscreen = false;
+        fullscreenIcon.innerHTML = '<path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zm6 10v6h-6v-2h4v-4h2zm-10 6H4v-6h2v4h4v2z"/>';
+      });
+    }
+  }
+
+  fullscreenBtn.addEventListener("click", toggleFullscreen);
+
+  // Salir con ESC
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+      editorWrapper.classList.remove("fullscreen");
+      isFullscreen = false;
+      fullscreenIcon.innerHTML = '<path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zm6 10v6h-6v-2h4v-4h2zm-10 6H4v-6h2v4h4v2z"/>';
+    }
+  });
+
   // === Crear primera caja de texto por defecto al cargar ===
   createTextElement();
 });
