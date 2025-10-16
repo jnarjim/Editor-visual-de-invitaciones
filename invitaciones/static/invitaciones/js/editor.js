@@ -509,11 +509,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const newHeight = Math.max(30, startHeightValue + dy);
       el.style.height = `${newHeight}px`;
 
-      // Ajustar font-size proporcional a la altura
-      const scaleFactor = newHeight / startHeightValue;
-      const newFontSize = Math.max(6, startFontSizeHeight * scaleFactor);
-      el.style.fontSize = `${newFontSize}px`;
-
       // Actualizar panel si este elemento está seleccionado
       if (selectedElement === el) {
         fontSize.value = Math.round(newFontSize);
