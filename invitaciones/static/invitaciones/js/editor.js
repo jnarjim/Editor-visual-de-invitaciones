@@ -551,11 +551,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const newW = Math.max(40, startW + dx);
       el.style.width = `${newW}px`;
 
-      // Si quieres ajustar font-size proporcionalmente:
-      const scaleFactor = newW / startW;
-      const newFontSize = Math.max(6, startFontSize * scaleFactor);
-      el.style.fontSize = `${newFontSize}px`;
-
       if (selectedElement === el) {
         fontSize.value = Math.round(newFontSize);
         fontSizeValue.textContent = `${Math.round(newFontSize)}px`;
