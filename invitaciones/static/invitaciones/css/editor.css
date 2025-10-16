@@ -523,6 +523,26 @@ body {
   color: #000;
 }
 
+/* Contenedor para la cuadrícula overlay */
+#canvas.show-grid .grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 999;
+}
+
+#gridBtn.active {
+  background: #f3f4f6;
+  border-color: #000;
+}
+
 .icon {
   width: 16px;
   height: 16px;

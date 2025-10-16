@@ -666,6 +666,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Botón de cuadrícula
+  const gridBtn = document.getElementById("gridBtn");
+  let gridVisible = false;
+  let gridOverlay = null;
+
+  if (gridBtn) {
+    gridBtn.addEventListener("click", () => {
+      gridVisible = !gridVisible;
+
+      if (gridVisible) {
+        // Crear overlay de cuadrícula
+        if (!gridOverlay) {
+          gridOverlay = document.createElement("div");
+          gridOverlay.className = "grid-overlay";
+          canvas.appendChild(gridOverlay);
+        }
+        canvas.classList.add("show-grid");
+      } else {
+        // Remover overlay
+        if (gridOverlay) {
+          gridOverlay.remove();
+          gridOverlay = null;
+        }
+        canvas.classList.remove("show-grid");
+      }
+
+      gridBtn.classList.toggle("active", gridVisible);
+    });
+  }
+
   // === Crear primera caja de texto por defecto al cargar ===
   createTextElement();
 });
