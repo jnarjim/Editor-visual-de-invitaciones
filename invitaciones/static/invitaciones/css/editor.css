@@ -501,6 +501,28 @@ body {
   transform: scale(0.95);
 }
 
+.zoom-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  min-width: 70px;
+  justify-content: center;
+}
+
+.zoom-display .icon {
+  width: 16px;
+  height: 16px;
+  stroke: #000;
+  stroke-width: 2;
+}
+
+#zoomValue {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #000;
+}
+
 .icon {
   width: 16px;
   height: 16px;

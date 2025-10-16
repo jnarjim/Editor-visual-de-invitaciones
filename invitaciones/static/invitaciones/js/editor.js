@@ -606,6 +606,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const zoomInBtn = document.getElementById("zoomInBtn");
   const zoomOutBtn = document.getElementById("zoomOutBtn");
   const undoBtn = document.getElementById("undoBtn");
+  const zoomDisplay = document.getElementById("zoomDisplay");
+  const zoomValue = document.getElementById("zoomValue");
 
   console.log("Verificando botones de zoom...");
   console.log("Canvas:", canvas);
@@ -615,35 +617,41 @@ document.addEventListener("DOMContentLoaded", () => {
   // Zoom del canvas completo
   let canvasScale = 1;
 
+  function updateZoom() {
+    canvas.style.transform = `scale(${canvasScale})`;
+    canvas.style.transformOrigin = "center center";
+    zoomValue.textContent = `${Math.round(canvasScale * 100)}%`;
+  }
+
   // Zoom In
   if (zoomInBtn) {
-    console.log("Registrando Zoom In");
     zoomInBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       canvasScale = Math.min(3, canvasScale + 0.2);
-      canvas.style.transform = `scale(${canvasScale})`;
-      canvas.style.transformOrigin = "center center";
-      console.log("Zoom In aplicado. Scale:", canvasScale);
+      updateZoom();
     });
-  } else {
-    console.error("No se encontró zoomInBtn");
   }
 
   // Zoom Out
   if (zoomOutBtn) {
-    console.log("Registrando Zoom Out");
     zoomOutBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       canvasScale = Math.max(0.5, canvasScale - 0.2);
-      canvas.style.transform = `scale(${canvasScale})`;
-      canvas.style.transformOrigin = "center center";
-      console.log("Zoom Out aplicado. Scale:", canvasScale);
+      updateZoom();
     });
-  } else {
-    console.error("No se encontró zoomOutBtn");
   }
+
+  // Clic en la lupa → reset a 100%
+  if (zoomDisplay) {
+    zoomDisplay.addEventListener("click", () => {
+      canvasScale = 1;
+      updateZoom();
+    });
+  }
+
+  updateZoom();
 
   // Deshacer (remover último añadido)
   if (undoBtn) {
