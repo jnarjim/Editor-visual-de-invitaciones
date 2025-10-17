@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
   const addTextBtn = document.getElementById("addTextBtn");
   const deleteBtn = document.getElementById("deleteBtn");
-  const textContent = document.getElementById("textContent");
   const fontFamily = document.getElementById("fontFamily");
   const fontSize = document.getElementById("fontSize");
   const fontSizeValue = document.getElementById("fontSizeValue");
@@ -46,55 +45,119 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedElement = el;
     selectedElement.classList.add("selected");
 
-    // Si es texto (DIV)
-    if (selectedElement.tagName === "DIV") {
-        const currentText = selectedElement.textContent;
-        textContent.value = currentText === "Añadir texto" ? "" : currentText;
+    // Si es un texto editable
+    if (selectedElement.classList.contains("text-element")) {
+      const content = selectedElement.querySelector(".text-content");
 
-        fontFamily.value = selectedElement.style.fontFamily || "Montserrat";
-        fontSize.value = parseInt(selectedElement.style.fontSize) || 48;
-        fontSizeValue.textContent = `${fontSize.value}px`;
+      // Quitar borde al focus
+      content.style.outline = "none";
 
-        const currentLineHeight = parseFloat(selectedElement.style.lineHeight) || 1.2;
-        document.getElementById("lineHeightValueStepper").textContent = currentLineHeight.toFixed(1);
+      // Sincronizar controles
+      fontFamily.value = content.style.fontFamily || "Montserrat";
+      fontSize.value = parseInt(content.style.fontSize) || 48;
+      fontSizeValue.textContent = `${fontSize.value}px`;
 
-        const actualColor =
-          selectedElement.dataset.actualColor ||
-          rgbToHex(selectedElement.style.color) ||
-          "#000000";
-        textColor.value = actualColor;
-        textColorHex.value = actualColor;
+      const currentLineHeight = parseFloat(content.style.lineHeight) || 1.2;
+      document.getElementById("lineHeightValueStepper").value = currentLineHeight.toFixed(1);
 
-        const currentSpacing = parseFloat(selectedElement.style.letterSpacing) || 0;
-        document.getElementById("letterSpacingValueStepper").textContent = currentSpacing.toFixed(1);
+      const actualColor = content.dataset.actualColor || rgbToHex(content.style.color) || "#000000";
+      textColor.value = actualColor;
+      textColorHex.value = actualColor;
 
-        // No hay imagen seleccionada
-        selectedImage = null;
+      const currentSpacing = parseFloat(content.style.letterSpacing) || 0;
+      document.getElementById("letterSpacingValueStepper").value = currentSpacing.toFixed(1);
 
-      } else if (selectedElement.tagName === "IMG" || selectedElement.classList.contains("canvas-image")) {
-        // Si se selecciona una imagen
-        selectedImage = selectedElement;
-        // recuperar escala guardada o extraer de transform
-        currentScale = selectedImage.dataset.scale ? parseFloat(selectedImage.dataset.scale) : extractScale(selectedImage.style.transform) || 1;
-        // si no tiene scale en transform, dejar 1
-        textContent.value = "";
-      } else {
-        // cualquier otro caso
-        textContent.value = "";
-        selectedImage = null;
+      selectedImage = null;
+
+    } else if (selectedElement.tagName === "IMG" || selectedElement.classList.contains("canvas-image")) {
+      selectedImage = selectedElement;
+      currentScale = selectedImage.dataset.scale
+        ? parseFloat(selectedImage.dataset.scale)
+        : extractScale(selectedElement.style.transform) || 1;
+    } else {
+      selectedImage = null;
     }
-    // === Actualizar botones de alineación según el texto seleccionado ===
-    if (selectedElement && selectedElement.tagName === "DIV") {
-      const align = selectedElement.style.textAlign || "center";
-      alignLeftBtn.classList.toggle("active", align === "left");
-      alignCenterBtn.classList.toggle("active", align === "center");
-      alignRightBtn.classList.toggle("active", align === "right");
+
+      // Actualizar botones de alineación
+      if (selectedElement.classList.contains("text-element")) {
+        const content = selectedElement.querySelector(".text-content");
+        const align = content.style.textAlign || "center";
+        alignLeftBtn.classList.toggle("active", align === "left");
+        alignCenterBtn.classList.toggle("active", align === "center");
+        alignRightBtn.classList.toggle("active", align === "right");
+      }
     }
+
+  // Función para crear un texto
+  function createTextElement(x = null, y = null) {
+   const div = document.createElement("div");
+   div.className = "text-element";
+   div.style.position = "absolute";
+   if (x !== null && y !== null) {
+     div.style.left = `${x}px`;
+     div.style.top = `${y}px`;
+     div.style.transform = "none";
+   } else {
+     div.style.left = "50%";
+     div.style.top = "50%";
+     div.style.transform = "translate(-50%, -50%)";
+   }
+   div.style.fontSize = "48px";
+   div.style.fontFamily = "Montserrat";
+   div.style.color = "#000000";
+
+   const content = document.createElement("div");
+   content.className = "text-content";
+   content.contentEditable = true;
+   content.textContent = "Nuevo texto";
+
+   // Crear handle de arrastre
+   const dragHandle = document.createElement("div");
+   dragHandle.className = "drag-handle";
+   dragHandle.innerHTML = `
+     <svg viewBox="0 0 24 24">
+       <path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3"/>
+       <line x1="12" y1="2" x2="12" y2="22"/>
+       <line x1="2" y1="12" x2="22" y2="12"/>
+     </svg>
+   `;
+
+   div.appendChild(dragHandle);
+   div.appendChild(content);
+   canvas.appendChild(div);
+
+   selectElement(div);
+   actionStack.push({ type: "add", el: div });
+   makeDraggable(div);
+   makeResizable(div);
+
+   // Permitir edición natural del texto
+   content.addEventListener("click", (e) => {
+     e.stopPropagation();
+     if (!div.classList.contains("selected")) {
+       selectElement(div);
+     }
+   });
+
+   // Evitar que el arrastre se active al hacer clic en el texto para editar
+   content.addEventListener("mousedown", (e) => {
+     e.stopPropagation();
+   });
+}
+
+  // Helper: colocar caret al final (solo al crear)
+  function placeCaretAtEnd(el) {
+    const range = document.createRange();
+    const sel = window.getSelection();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
 
-  //Función auxiliar para obtener el valor actual de escala desde transform
+  // Función auxiliar para obtener el valor actual de escala desde transform
   function extractScale(transform) {
-    if(!transform) return 1;
+    if (!transform) return 1;
     const m = /scale\(([^)]+)\)/.exec(transform);
     return m ? parseFloat(m[1]) : 1;
   }
@@ -104,73 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedElement = null;
     selectedImage = null;
   }
-
-  // === Añadir texto ===
-  function createTextElement() {
-    const textEl = document.createElement("div");
-    textEl.classList.add("text-element");
-
-    // Crea el span que contendrá el texto
-    const textSpan = document.createElement("span");
-    textSpan.className = "text-content";
-    textSpan.textContent = "Añadir texto";
-    textEl.appendChild(textSpan);
-
-    // Configuración inicial de estilos
-    textEl.style.fontFamily = fontFamily.value;
-    textEl.style.fontSize = `${fontSize.value}px`;
-    textEl.style.color = "#999999"; // color placeholder
-    textEl.dataset.actualColor = textColor.value;
-    textEl.dataset.isPlaceholder = "true";
-    textEl.style.left = "50%";
-    textEl.style.top = "50%";
-    textEl.style.whiteSpace = "pre-wrap";
-    textEl.style.wordBreak = "break-word";
-    textEl.style.maxWidth = "90%";
-    textEl.style.textAlign = "center";
-    textEl.style.zIndex = textZIndex++;
-
-    makeDraggable(textEl);
-    makeResizable(textEl);
-    canvas.appendChild(textEl);
-    selectElement(textEl);
-
-    textEl.dataset.scale = 1;
-    textEl.dataset.isCentered = "true";
-    actionStack.push({ type: "add", el: textEl });
-    textContent.value = "";
-
-    return textEl;
-  }
-
-  addTextBtn.addEventListener("click", () => {
-    createTextElement();
-  });
-
-  // === Actualizar texto en tiempo real SOLO del elemento seleccionado ===
-  textContent.addEventListener("input", () => {
-      if (selectedElement && selectedElement.classList.contains("text-element")) {
-        const inputValue = textContent.value;
-
-        // Busca (o crea) el span interno
-        let textSpan = selectedElement.querySelector(".text-content");
-        if (!textSpan) {
-          textSpan = document.createElement("span");
-          textSpan.className = "text-content";
-          selectedElement.prepend(textSpan);
-        }
-
-        if (inputValue) {
-          textSpan.textContent = inputValue;
-          selectedElement.style.color = selectedElement.dataset.actualColor || textColor.value;
-          selectedElement.dataset.isPlaceholder = "false";
-        } else {
-          textSpan.textContent = "Añadir texto";
-          selectedElement.style.color = "#999999";
-          selectedElement.dataset.isPlaceholder = "true";
-        }
-      }
-  });
 
   // === Cambiar fuente ===
   fontFamily.addEventListener("change", () => {
@@ -191,11 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
   textColor.addEventListener("input", () => {
     textColorHex.value = textColor.value;
     if (selectedElement && selectedElement.tagName === "DIV") {
+      selectedElement.style.color = textColor.value;
       selectedElement.dataset.actualColor = textColor.value;
-      // Solo cambiar el color visible si no es placeholder
-      if (selectedElement.dataset.isPlaceholder !== "true") {
-        selectedElement.style.color = textColor.value;
-      }
     }
   });
 
@@ -204,11 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
       textColor.value = value;
       if (selectedElement && selectedElement.tagName === "DIV") {
+        selectedElement.style.color = value;
         selectedElement.dataset.actualColor = value;
-        // Solo cambiar el color visible si no es placeholder
-        if (selectedElement.dataset.isPlaceholder !== "true") {
-          selectedElement.style.color = value;
-        }
       }
     }
   });
@@ -237,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedElement) {
       selectedElement.remove();
       selectedElement = null;
-      textContent.value = "";
     }
   });
 
@@ -340,53 +329,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === Arrastrar elementos ===
   function makeDraggable(el) {
-    el.addEventListener("mousedown", (e) => {
-        e.preventDefault();
+  el.addEventListener("mousedown", (e) => {
+    // Permitir arrastre SOLO desde el drag-handle o desde imágenes
+    const isDragHandle = e.target.classList.contains("drag-handle") ||
+                         e.target.closest(".drag-handle");
+    const isImage = el.tagName === "IMG" || el.classList.contains("canvas-image");
 
-    if (e.target.classList.contains("resize-handle")) {
+    // Si es un texto y NO se hizo clic en el drag-handle, ignorar
+    if (el.classList.contains("text-element") && !isDragHandle) {
       return;
     }
 
-    // Si hace clic en la esquina inferior derecha (zona de resize), no arrastrar
-    if (
-      e.offsetX > el.clientWidth - 16 &&
-      e.offsetY > el.clientHeight - 16
-    ) {
-      return; // se permite solo redimensionar
+    // Ignorar clic en el contenido de texto editable
+    if (e.target.classList.contains("text-content") ||
+        e.target.isContentEditable) {
+      return;
     }
 
-    // Seleccionar elemento
+    // Ignorar clic en los handles de resize
+    if (
+      e.target.classList.contains("resize-handle") ||
+      e.target.classList.contains("resize-handle-width") ||
+      e.target.classList.contains("resize-handle-height")
+    ) {
+      return;
+    }
+
+    e.preventDefault();
+
+    // Seleccionar elemento actual
     selectElement(el);
 
-    // Si el elemento tiene left/top en % (centrado), convertir a px para evitar salto
+    // Calcular offset del clic dentro del elemento
     const rect = canvas.getBoundingClientRect();
-    const computedLeft = el.offsetLeft;
-    const computedTop = el.offsetTop;
+    offsetX = e.clientX - rect.left - el.offsetLeft;
+    offsetY = e.clientY - rect.top - el.offsetTop;
 
-    // Recuperar escala actual para no perderla
-    const scale = el.dataset.scale
-      ? parseFloat(el.dataset.scale)
-      : extractScale(el.style.transform) || 1;
-
-    // Asegurar que esté dentro de los límites del canvas
-    const elWidth = el.offsetWidth;
-    const elHeight = el.offsetHeight;
-    const canvasWidth = canvas.clientWidth;
-    const canvasHeight = canvas.clientHeight;
-
-    const safeLeft = Math.max(0, Math.min(computedLeft, canvasWidth - elWidth));
-    const safeTop = Math.max(0, Math.min(computedTop, canvasHeight - elHeight));
-
-    el.style.left = `${safeLeft}px`;
-    el.style.top = `${safeTop}px`;
-    el.dataset.isCentered = "false";
-    el.style.transform = `translate(0, 0) scale(${scale})`;
-    el.dataset.scale = scale;
-
+    // Activar arrastre
     isDragging = true;
-    const rectCanvas = canvas.getBoundingClientRect();
-    offsetX = e.clientX - rectCanvas.left - el.offsetLeft;
-    offsetY = e.clientY - rectCanvas.top - el.offsetTop;
   });
 }
 
@@ -419,6 +399,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === Click en elementos de texto para seleccionar ===
   canvas.addEventListener("click", (e) => {
+    // Si se hace clic en el contenido editable, no deseleccionar
+    if (e.target.classList.contains("text-content") ||
+        e.target.isContentEditable) {
+      return;
+    }
+
     if (e.target.classList.contains("text-element")) {
         e.stopPropagation();
         selectElement(e.target);
@@ -427,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   });
 
-  function makeResizable(el) {
+  function  makeResizable(el) {
     const handle = document.createElement("div");
     handle.classList.add("resize-handle");
     el.appendChild(handle);
@@ -508,12 +494,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const dy = e.clientY - startHeightY;
       const newHeight = Math.max(30, startHeightValue + dy);
       el.style.height = `${newHeight}px`;
-
-      // Actualizar panel si este elemento está seleccionado
-      if (selectedElement === el) {
-        fontSize.value = Math.round(newFontSize);
-        fontSizeValue.textContent = `${Math.round(newFontSize)}px`;
-      }
     }
 
     function stopResizeHeight() {
@@ -544,7 +524,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isResizing) return;
       const dx = e.clientX - startX;
       const newW = Math.max(40, startW + dx);
+      // calcular font-size proporcional (igual lógica que en otras resizes)
+      const scaleFactor = newW / startW;
+      const newFontSize = Math.max(6, startFontSize * scaleFactor);
+
       el.style.width = `${newW}px`;
+      el.style.fontSize = `${newFontSize}px`;
 
       if (selectedElement === el) {
         fontSize.value = Math.round(newFontSize);
@@ -558,6 +543,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.removeEventListener("mouseup", stopResizeWidth);
     }
 }
+
+  addTextBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    createTextElement();
+  });
 
   // === Descargar la invitación ===
   const downloadBtn = document.getElementById("downloadBtn");
@@ -689,6 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // FULLSCREEN
   const fullscreenBtn = document.getElementById("fullscreenBtn");
   const editorWrapper = document.querySelector(".editor-wrapper");
+  const fullscreenIcon = document.getElementById("fullscreenIcon");
   let isFullscreen = false;
 
   function toggleFullscreen() {

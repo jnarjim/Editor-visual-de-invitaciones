@@ -347,7 +347,7 @@ body {
 
 .text-element {
   position: absolute;
-  cursor: crosshair;
+  cursor: move;
   user-select: none;
   padding: 8px;
   white-space: pre-wrap;
@@ -372,6 +372,45 @@ body {
   width: 100%;
   text-align: inherit;
   color: inherit;
+  cursor: text;
+}
+
+/* Handle de arrastre para textos */
+.text-element .drag-handle {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 24px;
+  height: 24px;
+  background: #000;
+  border: 2px solid white;
+  border-radius: 4px;
+  cursor: move;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.text-element.selected .drag-handle {
+  display: flex;
+}
+
+.text-element .drag-handle:hover {
+  transform: scale(1.1);
+  background: #333;
+}
+
+.text-element .drag-handle svg {
+  width: 14px;
+  height: 14px;
+  stroke: white;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .text-element .resize-handle,
@@ -422,6 +461,10 @@ body {
 .text-element .resize-handle-height:hover {
   transform: scale(1.25);
   background: gray;
+}
+
+.text-content:focus{
+  outline: none;
 }
 
 .resize-handle::before {
