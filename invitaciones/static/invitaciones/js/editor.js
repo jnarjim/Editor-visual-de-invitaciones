@@ -17,12 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let isDragging = false;
   let offsetX = 0;
   let offsetY = 0;
-  let textZIndex = 100; // z-index para textos (siempre encima)
-  let imageZIndex = 1; // z-index para imágenes (siempre detrás)
+  let textZIndex = 100;
+  let imageZIndex = 1
 
   const alignLeftBtn = document.getElementById("alignLeftBtn");
   const alignCenterBtn = document.getElementById("alignCenterBtn");
   const alignRightBtn = document.getElementById("alignRightBtn");
+
+  const bringForwardBtn = document.getElementById("bringForwardBtn");
+  const sendBackwardBtn = document.getElementById("sendBackwardBtn");
 
   // === Funciones utilitarias ===
   function rgbToHex(rgb) {
@@ -105,6 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
    div.style.fontSize = "48px";
    div.style.fontFamily = "Montserrat";
    div.style.color = "#000000";
+   div.style.zIndex = textZIndex++;
+   div.classList.add("canvas-item");
 
    const content = document.createElement("div");
    content.className = "text-content";
@@ -222,6 +227,48 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // === Traer al frente / Enviar atrás ===
+  function bringForward(el) {
+    if (!el) return;
+
+    // Obtener todos los elementos del canvas que sean canvas-item
+    const elements = Array.from(canvas.children).filter(c => c.classList.contains("canvas-item"));
+
+    // Ordenar por z-index actual
+    elements.sort((a, b) => (parseInt(a.style.zIndex) || 0) - (parseInt(b.style.zIndex) || 0));
+
+    // Encontrar el índice del elemento actual
+    const index = elements.indexOf(el);
+
+    // Si no está al final, intercambiar z-index con el siguiente
+    if (index < elements.length - 1) {
+      const nextEl = elements[index + 1];
+      const tempZ = el.style.zIndex;
+      el.style.zIndex = nextEl.style.zIndex;
+      nextEl.style.zIndex = tempZ;
+    }
+  }
+
+  function sendBackward(el) {
+    if (!el) return;
+
+    const elements = Array.from(canvas.children).filter(c => c.classList.contains("canvas-item"));
+    elements.sort((a, b) => (parseInt(a.style.zIndex) || 0) - (parseInt(b.style.zIndex) || 0));
+
+    const index = elements.indexOf(el);
+
+    // Si no está al inicio, intercambiar z-index con el anterior
+    if (index > 0) {
+      const prevEl = elements[index - 1];
+      const tempZ = el.style.zIndex;
+      el.style.zIndex = prevEl.style.zIndex;
+      prevEl.style.zIndex = tempZ;
+    }
+  }
+
+  bringForwardBtn.addEventListener("click", () => bringForward(selectedElement));
+  sendBackwardBtn.addEventListener("click", () => sendBackward(selectedElement));
+
   // === Eliminar elemento ===
   deleteBtn.addEventListener("click", () => {
     if (selectedElement) {
@@ -246,6 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
            img.style.position = "absolute";
            img.style.cursor = "move";
            img.style.zIndex = imageZIndex++;
+           img.classList.add("canvas-item");
 
            const maxW = canvas.clientWidth * 0.8;
            const maxH = canvas.clientHeight * 0.8;
