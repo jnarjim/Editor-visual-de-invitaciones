@@ -529,7 +529,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const newFontSize = Math.max(6, startFontSize * scaleFactor);
 
       el.style.width = `${newW}px`;
-      el.style.fontSize = `${newFontSize}px`;
 
       if (selectedElement === el) {
         fontSize.value = Math.round(newFontSize);
