@@ -21,11 +21,12 @@
         </div>
 
         <div class="editor-wrapper">
-            <div class="panel">
+            <div class="top-toolbar">
 
-                <div class="form-section">
-                    <h3 class="section-subtitle">Fuente</h3>
-                    <select id="fontFamily" class="select-field">
+                <!-- Fuente -->
+                <div class="control-group-vertical">
+                    <label class="control-label">Fuente</label>
+                    <select id="fontFamily" class="toolbar-select">
                         <option value="Playfair Display">Playfair Display</option>
                         <option value="Great Vibes">Great Vibes</option>
                         <option value="Cormorant Garamond">Cormorant Garamond</option>
@@ -36,162 +37,165 @@
                     </select>
                 </div>
 
-                <div class="form-section">
-                    <div class="range-container">
-                        <h3 class="section-subtitle">Tamaño</h3>
-                        <span class="range-value" id="fontSizeValue">48px</span>
-                    </div>
-                    <input type="range" id="fontSize" class="range-slider" min="12" max="72" value="48">
+                <!-- Tamaño -->
+                <div class="control-group-vertical">
+                    <label class="control-label">Tamaño</label>
+                    <input type="range" id="fontSize" class="toolbar-range" min="12" max="72" value="48">
+                    <span id="fontSizeValue" class="toolbar-range-value">48px</span>
                 </div>
 
-                <div class="form-section">
-                    <div class="section-header">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                        <h3 class="section-subtitle">Color</h3>
-                    </div>
-                    <div class="color-group">
-                        <input type="color" id="textColor" class="color-picker" value="#000000">
-                        <input type="text" id="textColorHex" class="color-input" value="#000000">
+                <!-- Color -->
+                <div class="control-group-vertical">
+                    <label class="control-label">Color</label>
+                    <div class="color-controls">
+                        <input type="color" id="textColor" class="toolbar-color" value="#000000">
+                        <input type="text" id="textColorHex" class="toolbar-color-hex" value="#000000">
                     </div>
                 </div>
 
-                <div class="divider"></div>
+                <!-- Botones añadir/eliminar/subir -->
+                <div class="toolbar-group">
+                    <button class="toolbar-btn black" id="addTextBtn" title="Añadir texto">+ Texto</button>
+                    <button class="toolbar-btn outline" id="deleteBtn" title="Eliminar">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
 
-                <div class="form-section">
-                    <div class="button-grid-3">
-                        <button class="btn btn-black" id="addTextBtn" title="Añadir Texto">
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-                        </button>
-                        <button class="btn btn-outline" id="deleteBtn" title="Eliminar">
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                        </button>
-                        <label class="btn btn-outline" style="margin: 0;" title="Subir Imagen">
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                            <input type="file" id="uploadImage" accept="image/*" style="display: none;">
-                        </label>
-                    </div>
+                    <label class="btn-icon" title="Subir imagen" style="cursor:pointer;">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <path d="M17 8l-5-5-5 5"/>
+                            <path d="M12 3v12"/>
+                        </svg>
+                        <input type="file" id="uploadImage" accept="image/*" hidden>
+                    </label>
 
-                    <div class="divider" style="margin: 16px 0;"></div>
+                </div>
 
-                    <div class="button-grid-2">
-                        <button class="btn btn-black" id="downloadBtn">
-                            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                            <span>Descargar</span>
-                        </button>
-                        <button class="btn btn-gray" id="saveBtn">
-                            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
-                            <span>Guardar</span>
-                        </button>
+                <!-- Interlineado -->
+                <div class="control-group-vertical">
+                    <label class="control-label">Interlineado</label>
+                    <div class="number-stepper">
+                        <button type="button" class="stepper-btn" data-step="-0.1">−</button>
+                        <input type="number" step="0.1" id="lineHeightValueStepper" value="1.2">
+                        <button type="button" class="stepper-btn" data-step="0.1">+</button>
                     </div>
                 </div>
-            </div>
 
-            <div class="canvas-section">
-                <div class="canvas-controls">
-                    <div class="controls-left">
-                        <div class="control-group-inline">
-                          <label>Interlineado:</label>
-                          <div class="number-stepper">
-                            <button type="button" class="stepper-btn" data-step="-0.1">−</button>
-                            <input type="number" step="0.1" id="lineHeightValueStepper" value="1.2" style="width: 50px; text-align: center;">
-                            <button type="button" class="stepper-btn" data-step="0.1">+</button>
-                          </div>
-                        </div>
+                <div class="control-group-vertical">
+                    <label class="control-label">Interletrado</label>
+                    <div class="number-stepper">
+                        <button type="button" class="stepper-btn" data-step="-0.5">−</button>
+                        <input type="number" step="0.5" id="letterSpacingValueStepper" value="0">
+                        <button type="button" class="stepper-btn" data-step="0.5">+</button>
+                    </div>
+                </div>
 
-                        <div class="control-group-inline">
-                          <label>Interletrado:</label>
-                          <div class="number-stepper">
-                            <button type="button" class="stepper-btn" data-step="-0.5">−</button>
-                            <input type="number" step="0.5" id="letterSpacingValueStepper" value="0" style="width: 50px; text-align: center;">
-                            <button type="button" class="stepper-btn" data-step="0.5">+</button>
-                          </div>
-                        </div>
+                <!-- Alineación -->
+                <div class="align-buttons">
+                    <button class="btn-icon" id="alignLeftBtn" title="Alinear a la izquierda">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6"/>
+                            <line x1="4" y1="12" x2="14" y2="12"/>
+                            <line x1="4" y1="18" x2="18" y2="18"/>
+                        </svg>
+                    </button>
 
-                        <div class="align-buttons">
-                            <button class="btn-icon" id="alignLeftBtn" title="Alinear a la izquierda">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <line x1="4" y1="6" x2="20" y2="6"/>
-                                    <line x1="4" y1="12" x2="14" y2="12"/>
-                                    <line x1="4" y1="18" x2="18" y2="18"/>
-                                </svg>
-                            </button>
+                    <button class="btn-icon" id="alignCenterBtn" title="Alinear al centro">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="6" y1="6" x2="18" y2="6"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                            <line x1="5" y1="18" x2="19" y2="18"/>
+                        </svg>
+                    </button>
 
-                            <button class="btn-icon" id="alignCenterBtn" title="Alinear al centro">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <line x1="6" y1="6" x2="18" y2="6"/>
-                                    <line x1="8" y1="12" x2="16" y2="12"/>
-                                    <line x1="5" y1="18" x2="19" y2="18"/>
-                                </svg>
-                            </button>
+                    <button class="btn-icon" id="alignRightBtn" title="Alinear a la derecha">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6"/>
+                            <line x1="10" y1="12" x2="20" y2="12"/>
+                            <line x1="6" y1="18" x2="20" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
 
-                            <button class="btn-icon" id="alignRightBtn" title="Alinear a la derecha">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <line x1="4" y1="6" x2="20" y2="6"/>
-                                    <line x1="10" y1="12" x2="20" y2="12"/>
-                                    <line x1="6" y1="18" x2="20" y2="18"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div>
-                            <button id="bringForwardBtn" class="btn-icon" title="Traer al frente">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Traer / Enviar con etiqueta "Orden" -->
+                <div class="control-group-vertical">
+                    <label class="control-label">Orden</label>
+                    <div class="order-buttons">
+                        <!-- Traer al frente -->
+                        <button id="bringForwardBtn" class="btn-icon" title="Traer al frente">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="3" width="18" height="18" rx="2"/>
                                 <path d="M8 8h8v8H8z"/>
                                 <polyline points="12 12 12 16 16 16"/>
-                              </svg>
-                            </button>
+                            </svg>
+                        </button>
 
-                            <button id="sendBackwardBtn" class="btn-icon" title="Enviar atrás">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <!-- Enviar atrás -->
+                        <button id="sendBackwardBtn" class="btn-icon" title="Enviar atrás">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="3" width="18" height="18" rx="2"/>
                                 <path d="M8 8h8v8H8z"/>
                                 <polyline points="12 12 12 8 8 8"/>
-                              </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="controls-right">
-                        <button class="btn-icon" id="fullscreenBtn" title="Pantalla completa">
-                          <svg id="fullscreenIcon" class="icon" viewBox="0 0 24 24">
-                            <path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zm6 10v6h-6v-2h4v-4h2zm-10 6H4v-6h2v4h4v2z"/>
-                          </svg>
-                        </button>
-                        <div id="zoomDisplay" class="btn-icon zoom-display">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24">
-                              <circle cx="11" cy="11" r="8" />
-                              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                            </svg>
-                            <span id="zoomValue">100%</span>
-                        </div>
-                        <button class="btn-icon" id="zoomOutBtn" title="Alejar">
-                            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M8 11h6"/></svg>
-                        </button>
-                        <button class="btn-icon" id="zoomInBtn" title="Acercar">
-                            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
-                        </button>
-                        <button class="btn-icon" id="undoBtn" title="Deshacer">
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
-                        </button>
-                        <button class="btn-icon" id="gridBtn" title="Mostrar/Ocultar cuadrícula">
-                            <svg class="icon" viewBox="0 0 24 24">
-                                <rect x="3" y="3" width="7" height="7"/>
-                                <rect x="14" y="3" width="7" height="7"/>
-                                <rect x="14" y="14" width="7" height="7"/>
-                                <rect x="3" y="14" width="7" height="7"/>
                             </svg>
                         </button>
                     </div>
                 </div>
 
-                <div class="canvas-container">
-                    <div id="canvas"></div>
-                </div>
+
             </div>
+
+            <div class="canvas-container">
+                <div id="canvas"></div>
+            </div>
+
         </div>
     </div>
-    <!-- Librería necesaria para descargar como imagen -->
+
+    <!-- Controls Right - Fuera -->
+    <div class="controls-right">
+        <button class="btn-icon" id="fullscreenBtn" title="Pantalla completa">
+            <svg id="fullscreenIcon" class="icon" viewBox="0 0 24 24">
+                <path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zm6 10v6h-6v-2h4v-4h2zm-10 6H4v-6h2v4h4v2z"/>
+            </svg>
+        </button>
+
+        <div id="zoomDisplay" class="btn-icon zoom-display">
+            <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <span id="zoomValue">100%</span>
+        </div>
+
+        <button class="btn-icon" id="zoomOutBtn" title="Alejar">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M8 11h6"/></svg>
+        </button>
+
+        <button class="btn-icon" id="zoomInBtn" title="Acercar">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+        </button>
+
+        <button class="btn-icon" id="undoBtn" title="Deshacer">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M3 7v6h6"/>
+                <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
+            </svg>
+        </button>
+
+        <button class="btn-icon" id="gridBtn" title="Mostrar/Ocultar cuadrícula">
+            <svg class="icon" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+        </button>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="{% static 'invitaciones/js/editor.js' %}"></script>
 
