@@ -52,9 +52,11 @@ body {
   gap: 20px;
   flex-wrap: wrap;
   padding: 16px 20px;
+  background: #ffffff;
   background-color: #f9fafb;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .toolbar-group {
@@ -74,6 +76,20 @@ body {
   white-space: nowrap;
 }
 
+.toolbar-select,
+.toolbar-color,
+.toolbar-color-hex,
+.number-stepper input[type="number"] {
+  border: 1px solid #e2e2e2;
+}
+
+.toolbar-select:focus,
+.toolbar-color-hex:focus,
+.number-stepper input[type="number"]:focus {
+  border-color: #000;
+}
+
+
 .toolbar-select {
   height: 44px;
   font-size: 0.9rem;
@@ -91,8 +107,8 @@ body {
 
 .toolbar-range {
   width: 150px;
-  height: 8px;
-  background: #d1d5db;
+  height: 6px;
+  background: #e1e1e1;
   outline: none;
   cursor: pointer;
   -webkit-appearance: none;
@@ -102,16 +118,16 @@ body {
 .toolbar-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background: #000;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .toolbar-range::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background: #000;
   border-radius: 50%;
   cursor: pointer;
@@ -176,26 +192,29 @@ body {
 }
 
 .toolbar-btn.black {
-  background: #000;
-  color: white;
-  border: 1px solid #000;
+  background: #ffffff;
+  color: #000;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
 }
 
 .toolbar-btn.black:hover {
-  background: #1f2937;
+  background: #f5f5f5;
+  border-color: #000;
 }
 
 .toolbar-btn.outline {
-  background: white;
+  background: #ffffff;
   color: #000;
-  border: 1px solid #d1d5db;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
   width: 44px;
   padding: 0;
 }
 
 .toolbar-btn.outline:hover {
+  background: #f5f5f5;
   border-color: #000;
-  background: #f9fafb;
 }
 
 /* Controles (interlineado, interletrado) */
@@ -331,16 +350,16 @@ body {
   justify-content: center;
   width: 44px;
   height: 44px;
-  border: 1px solid #d1d5db;
-  background: white;
-  border-radius: 4px;
+  border: 1px solid #d7d7d7;
+  background: #ffffff;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-icon:hover:not(:disabled) {
+  background: #f5f5f5;
   border-color: #000;
-  background: #f9fafb;
 }
 
 .btn-icon:disabled {
@@ -360,7 +379,7 @@ body {
 .icon {
   width: 24px;
   height: 24px;
-  stroke: currentColor;
+  stroke: #000;
   fill: none;
   stroke-width: 2;
   stroke-linecap: round;
@@ -377,10 +396,12 @@ body {
   flex-direction: column;
   gap: 8px;
   background-color: rgba(255, 255, 255, 0.98);
+  background: #ffffff;
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
   z-index: 9999;
   pointer-events: auto;
 }
@@ -432,8 +453,8 @@ body {
   max-width: 900px;
   aspect-ratio: 3/4;
   background: white;
-  border: 1px solid #d1d5db;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   overflow: hidden;
 }
 
@@ -444,7 +465,7 @@ body {
   left: 4px;
   right: 4px;
   bottom: 4px;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(0,0,0,0.08);
   pointer-events: none;
   z-index: 0;
 }
@@ -502,7 +523,7 @@ body {
 }
 
 .text-element.selected {
-  outline: 1px dashed #aaa;
+  outline: 1px solid rgba(0,0,0,0.15);
   outline-offset: 2px;
 }
 
@@ -523,8 +544,8 @@ body {
   position: absolute;
   top: -12px;
   left: -12px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #000;
   border: 2px solid white;
   border-radius: 4px;
@@ -561,12 +582,12 @@ body {
 .text-element .resize-handle-height,
 .text-element .resize-handle-width {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: white;
-  border: 2px solid black;
+  border: 1px solid #000;
   border-radius: 50%;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
   display: none;
   align-items: center;
   justify-content: center;
